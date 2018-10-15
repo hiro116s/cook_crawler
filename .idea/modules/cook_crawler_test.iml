@@ -11,6 +11,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="cook_crawler_main" />
     <orderEntry type="library" name="Gradle: edu.uci.ics:crawler4j:4.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: args4j:args4j:2.33" level="project" />
+    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.11.3" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.tika:tika-parsers:1.16" level="project" />
