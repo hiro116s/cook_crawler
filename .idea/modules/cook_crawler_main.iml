@@ -3,6 +3,9 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../out/production/classes" />
     <exclude-output />
+    <content url="file://$MODULE_DIR$/../../build/generated/source/apt/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../build/generated/source/apt/main" isTestSource="false" generated="true" />
+    </content>
     <content url="file://$MODULE_DIR$/../../src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
@@ -32,6 +35,7 @@
     <orderEntry type="library" name="Gradle: org.apache.tika:tika-core:1.16" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.james:apache-mime4j-dom:0.8.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.immutables:value:annotations:2.7.1" level="project" />
     <orderEntry type="library" name="Gradle: org.ccil.cowan.tagsoup:tagsoup:1.2.1" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.5" level="project" />
   </component>

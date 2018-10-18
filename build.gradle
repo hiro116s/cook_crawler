@@ -2,8 +2,23 @@ group 'jp.hiro116s.cook.crawler'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: "net.ltgt.apt"
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.5"
+    }
+}
 
 repositories {
     mavenCentral()
@@ -17,6 +32,8 @@ dependencies {
     compile group: 'edu.uci.ics', name: 'crawler4j', version: '4.4.0'
     compile group: 'args4j', name: 'args4j', version: '2.33'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+    apt "org.immutables:value:2.7.1" // for annotation processor
+    compileOnly "org.immutables:value:2.7.1:annotations" // annotation-only artifact
 }
 
 jar {

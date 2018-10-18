@@ -2,6 +2,7 @@ package jp.hiro116s.cook.crawler;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
+import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
@@ -10,6 +11,7 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 public class CrawlerTool {
@@ -30,7 +32,8 @@ public class CrawlerTool {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(arguments.storagePath);
-        config.setMaxDepthOfCrawling(1);
+        config.setMaxDepthOfCrawling(10);
+
         /*
          * Instantiate the controller for this crawl.
          */
@@ -44,13 +47,13 @@ public class CrawlerTool {
          * URLs that are fetched and then the crawler starts following links
          * which are found in these pages
          */
-        controller.addSeed("https://cookpad.com/category/1232");
+        controller.addSeed("https://cookpad.com/recipe/714711");
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(CookpadCrawler.class, arguments.numberOfCrawlers);
+        controller.start(() -> new CookpadCrawler(new HashSet<>()), arguments.numberOfCrawlers);
     }
 
     private static Arguments parseArgs(final String[] args) {

@@ -4,18 +4,23 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import jp.hiro116s.cook.crawler.scraper.CookpadScraper;
+import jp.hiro116s.cook.crawler.scraper.IScraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class CookpadCrawler extends WebCrawler {
+    private final static Pattern FILTERS = Pattern.compile("^[^m].*/(recipe|category)/[0-9]+");
+    private final Set<String> visitedUrlSet;
 
-    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
-            + "|png|mp3|mp4|zip|gz))$");
+    public CookpadCrawler(Set<String> visitedUrlSet) {
+        this.visitedUrlSet = visitedUrlSet;
+    }
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -29,7 +34,14 @@ public class CookpadCrawler extends WebCrawler {
      */
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
-        return false;
+        final String rawUrl = url.getURL();
+        if (FILTERS.matcher(rawUrl).matches() && !visitedUrlSet.contains(rawUrl)) {
+            System.out.println("Added : " + rawUrl);
+            visitedUrlSet.add(rawUrl);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -37,16 +49,31 @@ public class CookpadCrawler extends WebCrawler {
      * to be processed by your program.
      */
     @Override
-    public void visit(Page page) {
-        String url = page.getWebURL().getURL();
-        System.out.println("URL: " + url);
-
-        if (page.getParseData() instanceof HtmlParseData) {
-            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-            final Document document = Jsoup.parse(htmlParseData.getHtml());
-            final Elements elements = document.getElementsByClass("recipe-preview");
-            for (final Element element : elements) {
-                System.out.println(element.toString());
-            }
+    public void visit(final Page page) {
+        if (!(page.getParseData() instanceof HtmlParseData)) {
+            throw new IllegalPageFormatException("Page format is not HTML");
         }
-    }}
+        final HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+        final Document document = Jsoup.parse(htmlParseData.getHtml());
+
+        final IScraper scraper = new CookpadScraper();
+        final String url = page.getWebURL().getURL();
+        try {
+            if (url.matches(".*/recipe/[0-9]+")) {
+                System.out.println(url + " : " + scraper.extractRecipe(document, new URL(url)));
+            } else if (url.matches(".*/category/[0-9]+")) {
+                System.out.println(url + " : " + scraper.extractCategory(document, new URL(url)));
+            } else {
+                System.out.println(url + " : no parse");
+            }
+        } catch (final MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private class IllegalPageFormatException extends RuntimeException {
+        private IllegalPageFormatException(String message) {
+            super(message);
+        }
+    }
+}
