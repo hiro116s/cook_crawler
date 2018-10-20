@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 public class CookpadCrawler extends WebCrawler {
-    private final static Pattern FILTERS = Pattern.compile("^[^m].*/(recipe|category)/[0-9]+");
+    private final static Pattern FILTERS = Pattern.compile("^https://cookpad.com/(recipe|category)/[0-9]+");
     private final Set<String> visitedUrlSet;
 
     public CookpadCrawler(Set<String> visitedUrlSet) {
