@@ -32,6 +32,8 @@ dependencies {
     compile group: 'edu.uci.ics', name: 'crawler4j', version: '4.4.0'
     compile group: 'args4j', name: 'args4j', version: '2.33'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-guava', version: '2.9.6'
+
     apt "org.immutables:value:2.7.1" // for annotation processor
     compileOnly "org.immutables:value:2.7.1:annotations" // annotation-only artifact
 }

@@ -1,11 +1,15 @@
 package jp.hiro116s.cook.crawler.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Optional;
 import org.immutables.value.Value;
 
 import java.net.URL;
-import java.util.Optional;
 
 @Value.Immutable
+@JsonSerialize(as = ImmutableUser.class)
+@JsonDeserialize(as = ImmutableUser.class)
 public abstract class User {
     public abstract Optional<Integer> internalId();
 

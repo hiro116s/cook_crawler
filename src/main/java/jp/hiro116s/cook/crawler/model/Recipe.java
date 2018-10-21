@@ -1,13 +1,18 @@
 package jp.hiro116s.cook.crawler.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Optional;
 import org.immutables.value.Value;
 
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Value.Immutable
+@JsonSerialize(as = ImmutableRecipe.class)
+@JsonDeserialize(as = ImmutableRecipe.class)
 public abstract class Recipe {
     public abstract Optional<Integer> internalId();
 
