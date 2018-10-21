@@ -8,8 +8,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import jp.hiro116s.cook.crawler.model.Recipe;
 import jp.hiro116s.cook.crawler.model.RecipeCategory;
+import org.bson.BsonDocument;
 import org.bson.Document;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,12 +38,12 @@ public class MongoRecipeDataDao implements RecipeDataDao {
     }
 
     @Override
-    public void insertRecipeCategories(final Iterable<RecipeCategory> recipeCategory) {
-        insertInternal("category", recipeCategory);
+    public void insertRecipeCategories(final Iterable<RecipeCategory> recipeCategories) {
+        insertInternal("category", recipeCategories);
     }
 
     private void insertInternal(final String collectionName, final Iterable<? extends Object> jsonSerializableObjects) {
-        mongoDatabase.getCollection(collectionName).insertMany(StreamSupport.stream(jsonSerializableObjects.spliterator(), false)
+        final List<Document> documents = StreamSupport.stream(jsonSerializableObjects.spliterator(), false)
                 .map(obj -> {
                     try {
                         return Document.parse(objectMapper.writeValueAsString(obj));
@@ -49,6 +51,11 @@ public class MongoRecipeDataDao implements RecipeDataDao {
                         throw new RuntimeException(e);
                     }
                 })
-                .collect(Collectors.toList()));
+                .filter(document -> mongoDatabase.getCollection(collectionName).find(new Document("externalId", document.get("externalId"))).first() == null)
+                .collect(Collectors.toList());
+
+        if (!documents.isEmpty()) {
+            mongoDatabase.getCollection(collectionName).insertMany(documents);
+        }
     }
 }

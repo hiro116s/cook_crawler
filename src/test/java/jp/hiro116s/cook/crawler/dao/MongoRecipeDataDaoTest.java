@@ -20,6 +20,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +30,47 @@ import static jp.hiro116s.cook.crawler.dao.MongoRecipeDataDao.DB_NAME;
 import static org.junit.Assert.assertEquals;
 
 public class MongoRecipeDataDaoTest {
+    private static final URL RECIPE_URL;
+    private static final URL CATEGORY_URL;
+    private static final Recipe RECIPE_DATA;
+
+    static {
+        try {
+            RECIPE_URL = new URL("https://cookpad.com/recipe/854214");
+            CATEGORY_URL = new URL("https://cookpad.com/category/1232");
+            RECIPE_DATA = ImmutableRecipe.builder()
+                    .externalId(854214)
+                    .title("あっというまに♪うなぎの柳川風")
+                    .url(RECIPE_URL)
+                    .recipeSource(RecipeSource.COOK_PAD)
+                    .owner(ImmutableUser.builder()
+                            .externalId(276760)
+                            .title("yummysunny")
+                            .url(new URL("https://cookpad.com/kitchen/276760"))
+                            .build())
+                    .putAllImageUrlBySizeType(ImmutableMap.of(
+                            ImageSizeType.T280x210, new URL("https://img.cpcdn.com/recipes/854214/280/a8b8ba1bbaf08c03cb4e849f7611fb82.jpg?u=276760&p=1246512137")))
+                    .addAllIngredients(ImmutableList.of(
+                            Ingredient.create("うなぎ", "１切れ"),
+                            Ingredient.create("ごぼう", "１／２本"),
+                            Ingredient.create("卵", "３個"),
+                            Ingredient.create("●水", "１／２カップ"),
+                            Ingredient.create("●麺つゆ（三倍濃縮）", "大さじ３"),
+                            Ingredient.create("●みりん", "大さじ１"),
+                            Ingredient.create("酒", "大さじ１")))
+                    .build();
+        } catch (final MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final RecipeCategory CATEGORY_DATA = ImmutableRecipeCategory.builder()
+            .externalId(1232)
+            .title("うなぎ")
+            .url(CATEGORY_URL)
+            .recipeSource(RecipeSource.COOK_PAD)
+            .build();
+
     private ObjectMapper objectMapper;
 
     private MongoClient mongoClient;
@@ -52,15 +94,9 @@ public class MongoRecipeDataDaoTest {
     }
 
     @Test
-    public void testInsertRecipeCategory() throws Exception {
-        final URL categoryUrl = new URL("https://cookpad.com/category/1232");
-        final RecipeCategory testData = ImmutableRecipeCategory.builder()
-                .externalId(1232)
-                .title("うなぎ")
-                .url(categoryUrl)
-                .recipeSource(RecipeSource.COOK_PAD)
-                .build();
-        mongoRecipeDataDao.insertRecipeCategories(ImmutableList.of(testData));
+    public void testInsertNotDuplicated() {
+        mongoRecipeDataDao.insertRecipeCategories(ImmutableList.of(CATEGORY_DATA));
+        mongoRecipeDataDao.insertRecipeCategories(ImmutableList.of(CATEGORY_DATA));
         final List<RecipeCategory> actual = StreamSupport.stream(mongoClient.getDatabase(DB_NAME).getCollection("category").find().spliterator(), false)
                 .map(document -> {
                     try {
@@ -70,35 +106,30 @@ public class MongoRecipeDataDaoTest {
                         throw new RuntimeException(e);
                     }
                 }).collect(Collectors.toList());
-        final List<RecipeCategory> expected = ImmutableList.of(testData);
+        final List<RecipeCategory> expected = ImmutableList.of(CATEGORY_DATA);
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testInsertRecipeCategory() {
+        mongoRecipeDataDao.insertRecipeCategories(ImmutableList.of(CATEGORY_DATA));
+        final List<RecipeCategory> actual = StreamSupport.stream(mongoClient.getDatabase(DB_NAME).getCollection("category").find().spliterator(), false)
+                .map(document -> {
+                    try {
+                        document.remove("_id");
+                        return objectMapper.readValue(document.toJson(), ImmutableRecipeCategory.class);
+                    } catch (final IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
+        final List<RecipeCategory> expected = ImmutableList.of(CATEGORY_DATA);
         assertEquals(expected, actual);
     }
 
     @Test
     public void testInsertRecipe() throws Exception {
-        final URL recipeUrl = new URL("https://cookpad.com/recipe/854214");
-        final Recipe testData = ImmutableRecipe.builder()
-                .externalId(854214)
-                .title("あっというまに♪うなぎの柳川風")
-                .url(recipeUrl)
-                .recipeSource(RecipeSource.COOK_PAD)
-                .owner(ImmutableUser.builder()
-                        .externalId(276760)
-                        .title("yummysunny")
-                        .url(new URL("https://cookpad.com/kitchen/276760"))
-                        .build())
-                .putAllImageUrlBySizeType(ImmutableMap.of(
-                        ImageSizeType.T280x210, new URL("https://img.cpcdn.com/recipes/854214/280/a8b8ba1bbaf08c03cb4e849f7611fb82.jpg?u=276760&p=1246512137")))
-                .addAllIngredients(ImmutableList.of(
-                        Ingredient.create("うなぎ", "１切れ"),
-                        Ingredient.create("ごぼう", "１／２本"),
-                        Ingredient.create("卵", "３個"),
-                        Ingredient.create("●水", "１／２カップ"),
-                        Ingredient.create("●麺つゆ（三倍濃縮）", "大さじ３"),
-                        Ingredient.create("●みりん", "大さじ１"),
-                        Ingredient.create("酒", "大さじ１")))
-                .build();
-        mongoRecipeDataDao.insertRecipes(ImmutableList.of(testData));
+        mongoRecipeDataDao.insertRecipes(ImmutableList.of(RECIPE_DATA));
         final List<Recipe> actual = StreamSupport.stream(mongoClient.getDatabase(DB_NAME).getCollection("recipe").find().spliterator(), false)
                 .map(document -> {
                     try {
@@ -108,7 +139,7 @@ public class MongoRecipeDataDaoTest {
                         throw new RuntimeException(e);
                     }
                 }).collect(Collectors.toList());
-        final List<Recipe> expected = ImmutableList.of(testData);
+        final List<Recipe> expected = ImmutableList.of(RECIPE_DATA);
         assertEquals(expected, actual);
     }
 }
