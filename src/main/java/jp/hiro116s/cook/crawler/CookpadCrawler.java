@@ -13,7 +13,6 @@ import org.jsoup.nodes.Document;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class CookpadCrawler extends WebCrawler {
@@ -41,7 +40,6 @@ public class CookpadCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         final String rawUrl = url.getURL();
         if (FILTERS.matcher(rawUrl).matches() && !visitedUrlSet.contains(rawUrl)) {
-            System.out.println("Added : " + rawUrl);
             visitedUrlSet.add(rawUrl);
             return true;
         } else {
@@ -65,11 +63,13 @@ public class CookpadCrawler extends WebCrawler {
         final String url = page.getWebURL().getURL();
         try {
             if (url.matches(".*/recipe/[0-9]+")) {
+                System.out.println("Parse recipe : " + url);
                 recipeDataDao.insertRecipe(scraper.extractRecipe(document, new URL(url)));
             } else if (url.matches(".*/category/[0-9]+")) {
+                System.out.println("Parse category : " + url);
                 recipeDataDao.insertRecipeCategory(scraper.extractCategory(document, new URL(url)));
             } else {
-                System.out.println(url + " : no parse");
+                System.out.println("no parse : " + url);
             }
         } catch (final MalformedURLException e) {
             throw new RuntimeException(e);

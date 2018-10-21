@@ -28,7 +28,7 @@ public class CrawlerTool {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(arguments.storagePath);
-        config.setMaxDepthOfCrawling(1);
+        config.setMaxDepthOfCrawling(10);
 
         /*
          * Instantiate the controller for this crawl.

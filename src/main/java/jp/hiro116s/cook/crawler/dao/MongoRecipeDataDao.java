@@ -8,7 +8,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import jp.hiro116s.cook.crawler.model.Recipe;
 import jp.hiro116s.cook.crawler.model.RecipeCategory;
-import org.bson.BsonDocument;
 import org.bson.Document;
 
 import java.util.List;
