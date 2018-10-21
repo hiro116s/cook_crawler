@@ -5,6 +5,7 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import jp.hiro116s.cook.crawler.dao.RecipeDataDao;
 import jp.hiro116s.cook.crawler.scraper.CookpadScraper;
 import jp.hiro116s.cook.crawler.scraper.IScraper;
 import org.jsoup.Jsoup;
@@ -17,10 +18,13 @@ import java.util.regex.Pattern;
 
 public class CookpadCrawler extends WebCrawler {
     private final static Pattern FILTERS = Pattern.compile("^https://cookpad.com/(recipe|category)/[0-9]+");
-    private final Multiset<String> visitedUrlSet;
 
-    public CookpadCrawler(final Multiset<String> visitedUrlSet) {
+    private final Multiset<String> visitedUrlSet;
+    private final RecipeDataDao recipeDataDao;
+
+    public CookpadCrawler(Multiset<String> visitedUrlSet, RecipeDataDao recipeDataDao) {
         this.visitedUrlSet = visitedUrlSet;
+        this.recipeDataDao = recipeDataDao;
     }
 
     /**
@@ -61,9 +65,9 @@ public class CookpadCrawler extends WebCrawler {
         final String url = page.getWebURL().getURL();
         try {
             if (url.matches(".*/recipe/[0-9]+")) {
-                System.out.println(url + " : " + scraper.extractRecipe(document, new URL(url)));
+                recipeDataDao.insertRecipe(scraper.extractRecipe(document, new URL(url)));
             } else if (url.matches(".*/category/[0-9]+")) {
-                System.out.println(url + " : " + scraper.extractCategory(document, new URL(url)));
+                recipeDataDao.insertRecipeCategory(scraper.extractCategory(document, new URL(url)));
             } else {
                 System.out.println(url + " : no parse");
             }

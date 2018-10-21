@@ -1,12 +1,17 @@
 package jp.hiro116s.cook.crawler;
 
 import com.google.common.collect.ConcurrentHashMultiset;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import jp.hiro116s.cook.crawler.dao.MongoRecipeDataDao;
+import jp.hiro116s.cook.crawler.dao.RecipeDataDao;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -23,7 +28,7 @@ public class CrawlerTool {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(arguments.storagePath);
-        config.setMaxDepthOfCrawling(10);
+        config.setMaxDepthOfCrawling(1);
 
         /*
          * Instantiate the controller for this crawl.
@@ -40,11 +45,18 @@ public class CrawlerTool {
          */
         controller.addSeed("https://cookpad.com/category/list");
 
+        final MongoClient mongoClient = new MongoClient(new MongoClientURI(arguments.mongoDbUri));
+        final RecipeDataDao recipeDataDao = MongoRecipeDataDao.create(mongoClient);
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(() -> new CookpadCrawler(ConcurrentHashMultiset.create()), arguments.numberOfCrawlers);
+        controller.start(() -> new CookpadCrawler(
+                ConcurrentHashMultiset.create(),
+                recipeDataDao
+        ), arguments.numberOfCrawlers);
+
+        mongoClient.close();
     }
 
     private static Arguments parseArgs(final String[] args) {
@@ -65,5 +77,8 @@ public class CrawlerTool {
 
         @Option(name = "--storagePath")
         private String storagePath;
+
+        @Option(name = "--mongoDbUri")
+        private String mongoDbUri = "mongodb://localhost:27017";
     }
 }
