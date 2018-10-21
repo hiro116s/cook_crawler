@@ -1,5 +1,6 @@
 package jp.hiro116s.cook.crawler;
 
+import com.google.common.collect.Multiset;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -16,9 +17,9 @@ import java.util.regex.Pattern;
 
 public class CookpadCrawler extends WebCrawler {
     private final static Pattern FILTERS = Pattern.compile("^https://cookpad.com/(recipe|category)/[0-9]+");
-    private final Set<String> visitedUrlSet;
+    private final Multiset<String> visitedUrlSet;
 
-    public CookpadCrawler(Set<String> visitedUrlSet) {
+    public CookpadCrawler(final Multiset<String> visitedUrlSet) {
         this.visitedUrlSet = visitedUrlSet;
     }
 
