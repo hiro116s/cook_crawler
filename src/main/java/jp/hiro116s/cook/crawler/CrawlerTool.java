@@ -43,7 +43,7 @@ public class CrawlerTool {
          * URLs that are fetched and then the crawler starts following links
          * which are found in these pages
          */
-        controller.addSeed("https://cookpad.com/category/list");
+        controller.addSeed("https://cookpad.com/category/177");
 
         final MongoClient mongoClient = new MongoClient(new MongoClientURI(arguments.mongoDbUri));
         final RecipeDataDao recipeDataDao = MongoRecipeDataDao.create(mongoClient);
