@@ -14,6 +14,7 @@ import jp.hiro116s.cook.crawler.model.Ingredient;
 import jp.hiro116s.cook.crawler.model.Recipe;
 import jp.hiro116s.cook.crawler.model.RecipeCategory;
 import jp.hiro116s.cook.crawler.model.RecipeSource;
+import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -140,6 +141,32 @@ public class MongoRecipeDataDaoTest {
                     }
                 }).collect(Collectors.toList());
         final List<Recipe> expected = ImmutableList.of(RECIPE_DATA);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testReadRecipes() throws Exception {
+        mongoRecipeDataDao.insertRecipe(RECIPE_DATA);
+        // Dummy
+        mongoRecipeDataDao.insertRecipe(ImmutableRecipe.builder()
+                .from(RECIPE_DATA)
+                .externalId(1234)
+                .build());
+        final List<? extends Recipe> actual = mongoRecipeDataDao.readRecipes(new Document("externalId", RECIPE_DATA.externalId()));
+        final List<? extends Recipe> expected = ImmutableList.of(RECIPE_DATA);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testReadRecipeCategories() throws Exception {
+        mongoRecipeDataDao.insertRecipeCategory(CATEGORY_DATA);
+        // Dummy
+        mongoRecipeDataDao.insertRecipeCategory(ImmutableRecipeCategory.builder()
+                .from(CATEGORY_DATA)
+                .externalId(3456)
+                .build());
+        final List<? extends RecipeCategory> actual = mongoRecipeDataDao.readRecipeCategories(new Document("externalId", CATEGORY_DATA.externalId()));
+        final List<? extends RecipeCategory> expected = ImmutableList.of(CATEGORY_DATA);
         assertEquals(expected, actual);
     }
 }
