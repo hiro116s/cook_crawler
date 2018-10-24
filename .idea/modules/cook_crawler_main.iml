@@ -18,6 +18,7 @@
     <orderEntry type="library" name="Gradle: org.mongodb:mongo-java-driver:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.fakemongo:fongo:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-guava:2.9.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.codelibs:lucene-analyzers-kuromoji-ipadic-neologd:5.4.1-20160218" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.tika:tika-parsers:1.16" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" level="project" />
@@ -31,6 +32,8 @@
     <orderEntry type="library" name="Gradle: de.grundid.opendatalab:geojson-jackson:1.2" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.lucene:lucene-analyzers-common:5.4.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.lucene:lucene-core:5.4.1" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />

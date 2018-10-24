@@ -57,6 +57,14 @@ public class MongoRecipeDataDao implements RecipeDataDao {
         return readInternal("category", ImmutableRecipeCategory.class, filter);
     }
 
+    public void insertRecipes(final String collectionName, final Iterable<Recipe> recipes) {
+        insertInternal(collectionName, recipes);
+    }
+
+    public ImmutableList<? extends Recipe> readRecipes(final String collectionName, final Bson filter) {
+        return readInternal(collectionName, ImmutableRecipe.class, filter);
+    }
+
     private <T> ImmutableList<? extends T> readInternal(final String collectionName, final Class<? extends T> clazz, final Bson filter) {
         return FluentIterable.from(mongoDatabase.getCollection(collectionName).find(filter))
                 .transform(document -> {

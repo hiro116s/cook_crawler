@@ -22,34 +22,37 @@
     <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.24" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:24.0-jre" level="project" />
-    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.ccil.cowan.tagsoup:tagsoup:1.2.1" level="project" />
     <orderEntry type="library" name="Gradle: com.sleepycat:je:5.0.84" level="project" />
     <orderEntry type="library" name="Gradle: org.mozilla:rhino:1.7.7.1" level="project" />
     <orderEntry type="library" name="Gradle: com.vividsolutions:jts:1.13" level="project" />
-    <orderEntry type="library" name="Gradle: org.ccil.cowan.tagsoup:tagsoup:1.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.tika:tika-core:1.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.lucene:lucene-core:5.4.1" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.tika:tika-core:1.16" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.james:apache-mime4j-core:0.8.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.tika:tika-parsers:1.16" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.james:apache-mime4j-dom:0.8.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.24" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.lucene:lucene-analyzers-common:5.4.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.uci.ics:crawler4j:4.4.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.tika:tika-parsers:1.16" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.immutables:value:annotations:2.7.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-guava:2.9.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:jul-to-slf4j:1.7.24" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.fakemongo:fongo:2.1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.codelibs:lucene-analyzers-kuromoji-ipadic-neologd:5.4.1-20160218" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: de.grundid.opendatalab:geojson-jackson:1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.fakemongo:fongo:2.1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.24" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="cook_crawler_main" />
 </module>

@@ -25,6 +25,9 @@ repositories {
     maven {
         url "https://repo.boundlessgeo.com/main/"
     }
+    maven {
+        url "http://maven.codelibs.org"
+    }
 }
 
 dependencies {
@@ -35,6 +38,8 @@ dependencies {
     compile 'org.mongodb:mongo-java-driver:3.5.0'
     compile 'com.github.fakemongo:fongo:2.1.0'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-guava', version: '2.9.6'
+    compile 'org.codelibs:lucene-analyzers-kuromoji-ipadic-neologd:5.4.1-20160218'
+    compile 'org.apache.commons:commons-lang3:3.4'
 
     apt "org.immutables:value:2.7.1" // for annotation processor
     compileOnly "org.immutables:value:2.7.1:annotations" // annotation-only artifact
